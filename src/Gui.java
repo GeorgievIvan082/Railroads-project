@@ -9,7 +9,7 @@ public class Gui extends JFrame {
     private int size;
     private static final int TILE_SIZE = 50;
     private List<Train> trains;
-    private Tile[][] tiles;
+    public Tile[][] tiles;
     private JPanel gridPanel;
     public Gui(int size, int noOfTrains) {
         this.size = size;
@@ -29,7 +29,7 @@ public class Gui extends JFrame {
         // Create tiles with random types and add them to the grid panel
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
-                Tile tile = new Tile(TileType.getRandomTileType());
+                Tile tile = new Tile(this, TileType.getRandomTileType());
                 tiles[row][col] = tile;  // Store the tile in the 2D array
                 gridPanel.add(tile);
             }
@@ -89,6 +89,24 @@ public class Gui extends JFrame {
         }
         return false;
     }
+    public void onTileChange(int row, int col, TileType newType) {
+        int fitness = evaluateCurrentFitness();
+        System.out.println("Fitness after update: " + fitness);
+    }
+
+    public int evaluateCurrentFitness() {
+        int size = tiles.length;
+        TileType[][] grid = new TileType[size][size];
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                grid[row][col] = tiles[row][col].getTileType();
+            }
+        }
+        Individual ind = new Individual(size, size);
+        ind.setGrid(grid);
+        return ind.evaluateFitness(getTrains());
+    }
+
     public void updateGridWithSolution(TileType[][] solutionGrid) {
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {

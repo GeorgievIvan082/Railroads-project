@@ -8,6 +8,7 @@ import java.util.Random;
 
 public class Tile extends JButton {
 
+    private final Gui gui;
     private TileType tileType;
     private boolean isTrainStart;
     private boolean isTrainEnd;
@@ -19,7 +20,8 @@ public class Tile extends JButton {
         repaint();
     }
 
-    public Tile(TileType tileType) {
+    public Tile(Gui gui, TileType tileType) {
+        this.gui = gui;
         this.tileType = tileType;
         this.isTrainEnd = false;
         this.isTrainStart = false;
@@ -33,7 +35,6 @@ public class Tile extends JButton {
         addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Show the dropdown menu when button is clicked
                 showDropdownMenu();
             }
         });
@@ -129,6 +130,7 @@ public class Tile extends JButton {
 
     // Method to show a dropdown to select tile type
     private void showDropdownMenu() {
+        int size = gui.tiles.length;  // Get the size of the grid
         // Create a dropdown (combo box) with all tile types
         TileType[] types = TileType.values();
         JComboBox<TileType> comboBox = new JComboBox<>(types);
@@ -141,6 +143,7 @@ public class Tile extends JButton {
         if (result == JOptionPane.OK_OPTION) {
             tileType = (TileType) comboBox.getSelectedItem();
             repaint();  // Repaint the tile with the new type
+            this.gui.onTileChange(size,size, tileType);  // Notify the GUI about the tile change
         }
     }
 
@@ -156,5 +159,9 @@ public class Tile extends JButton {
         int g = rand.nextInt(256);
         int b = rand.nextInt(256);
         return new Color(r, g, b);
+    }
+
+    public TileType getTileType() {
+        return tileType;
     }
 }

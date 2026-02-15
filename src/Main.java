@@ -9,8 +9,8 @@ public class Main {
         int size = sce.nextInt();
         System.out.println("Enter the number of trains:");
         int trains = sce.nextInt();
-        int populationSize = 100;
-        int maxGenerations = 100;
+        int populationSize = 1000;
+        int maxGenerations = 1000;
         long startTime = System.currentTimeMillis();
 
         // Create the grid and get the list of trains
