@@ -89,7 +89,7 @@ public class Gui extends JFrame {
         }
         return false;
     }
-    public void onTileChange(int row, int col, TileType newType) {
+    public void onTileChange() {
         int fitness = evaluateCurrentFitness();
         System.out.println("Fitness after update: " + fitness);
     }

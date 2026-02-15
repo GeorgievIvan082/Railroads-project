@@ -36,13 +36,14 @@ public class GeneticAlgorithm {
 
     // Method to create offspring by swapping parts of two parents
     public Individual crossoverSwapParts(Individual parent1, Individual parent2) {
-        Individual offspring = new Individual(parent1.getGrid().length, parent1.getGrid()[0].length);
-        TileType[][] grid = new TileType[parent1.getGrid().length][parent1.getGrid()[0].length];
+        int size = parent1.getGrid().length;
+        Individual offspring = new Individual(size, size);
+        TileType[][] grid = new TileType[size][size];
 
-        int crossoverPoint = random.nextInt(parent1.getGrid().length);  // Choose a random row to swap
+        int crossoverPoint = random.nextInt(size);  // Choose a random row to swap
 
-        for (int row = 0; row < parent1.getGrid().length; row++) {
-            for (int col = 0; col < parent1.getGrid()[0].length; col++) {
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
                 if (row < crossoverPoint) {
                     grid[row][col] = parent1.getGrid()[row][col];
                 } else {

@@ -78,6 +78,7 @@ public class Individual {
     }
 
     private boolean dfs(int x, int y, int destinationX, int destinationY, boolean[][] visited) {
+        // Base cases
         if (x < 0 || x >= rows || y < 0 || y >= cols || visited[x][y]) {
             return false;
         }
@@ -85,56 +86,167 @@ public class Individual {
             return true;
         }
 
+        // Mark visited
         visited[x][y] = true;
         TileType currentTile = grid[x][y];
 
-        // Directions: {up, down, left, right}
-        int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-        String[] exitDirs = {"up", "down", "left", "right"};  // For current exit check
-
-        for (int d = 0; d < 4; d++) {
-            int dx = dirs[d][0], dy = dirs[d][1];
-            int nx = x + dx, ny = y + dy;
-
-            if (nx >= 0 && nx < rows && ny >= 0 && ny < cols && !visited[nx][ny]) {
-                // Current allows exit?
-                boolean currentExit = switch (d) {
-                    case 0 -> currentTile.allowsUp();
-                    case 1 -> currentTile.allowsDown();
-                    case 2 -> currentTile.allowsLeft();
-                    case 3 -> currentTile.allowsRight();
-                    default -> false;
-                };
-
-                // Neighbor allows entry (opposite)?
-                boolean neighborEntry = switch (d) {
-                    case 0 -> grid[nx][ny].allowsDown();  // Up move: neigh bottom
-                    case 1 -> grid[nx][ny].allowsUp();    // Down: neigh top
-                    case 2 -> grid[nx][ny].allowsRight(); // Left: neigh right
-                    case 3 -> grid[nx][ny].allowsLeft();  // Right: neigh left
-                    default -> false;
-                };
-
-                if (currentExit && neighborEntry) {
-                    if (dfs(nx, ny, destinationX, destinationY, visited)) {
-                        return true;
-                    }
+        switch (currentTile) {
+            case HORIZONTAL:
+                // Left
+                if (y > 0 && !visited[x][y - 1] && grid[x][y - 1].allowsRight()) {
+                    if (dfs(x, y - 1, destinationX, destinationY, visited)) return true;
                 }
-            }
+                // Right
+                if (y < cols - 1 && !visited[x][y + 1] && grid[x][y + 1].allowsLeft()) {
+                    if (dfs(x, y + 1, destinationX, destinationY, visited)) return true;
+                }
+                break;
+
+            case VERTICAL:
+                // Up
+                if (x > 0 && !visited[x - 1][y] && grid[x - 1][y].allowsDown()) {
+                    if (dfs(x - 1, y, destinationX, destinationY, visited)) return true;
+                }
+                // Down
+                if (x < rows - 1 && !visited[x + 1][y] && grid[x + 1][y].allowsUp()) {
+                    if (dfs(x + 1, y, destinationX, destinationY, visited)) return true;
+                }
+                break;
+
+            case TOP_RIGHT:
+                // Up
+                if (x > 0 && !visited[x - 1][y] && grid[x - 1][y].allowsDown()) {
+                    if (dfs(x - 1, y, destinationX, destinationY, visited)) return true;
+                }
+                // Right
+                if (y < cols - 1 && !visited[x][y + 1] && grid[x][y + 1].allowsLeft()) {
+                    if (dfs(x, y + 1, destinationX, destinationY, visited)) return true;
+                }
+                break;
+
+            case BOTTOM_RIGHT:
+                // Down
+                if (x < rows - 1 && !visited[x + 1][y] && grid[x + 1][y].allowsUp()) {
+                    if (dfs(x + 1, y, destinationX, destinationY, visited)) return true;
+                }
+                // Right
+                if (y < cols - 1 && !visited[x][y + 1] && grid[x][y + 1].allowsLeft()) {
+                    if (dfs(x, y + 1, destinationX, destinationY, visited)) return true;
+                }
+                break;
+
+            case BOTTOM_LEFT:
+                // Down
+                if (x < rows - 1 && !visited[x + 1][y] && grid[x + 1][y].allowsUp()) {
+                    if (dfs(x + 1, y, destinationX, destinationY, visited)) return true;
+                }
+                // Left
+                if (y > 0 && !visited[x][y - 1] && grid[x][y - 1].allowsRight()) {
+                    if (dfs(x, y - 1, destinationX, destinationY, visited)) return true;
+                }
+                break;
+
+            case TOP_LEFT:
+                // Up
+                if (x > 0 && !visited[x - 1][y] && grid[x - 1][y].allowsDown()) {
+                    if (dfs(x - 1, y, destinationX, destinationY, visited)) return true;
+                }
+                // Left
+                if (y > 0 && !visited[x][y - 1] && grid[x][y - 1].allowsRight()) {
+                    if (dfs(x, y - 1, destinationX, destinationY, visited)) return true;
+                }
+                break;
+
+            case THREEWAY_TOP:
+                // Left
+                if (y > 0 && !visited[x][y - 1] && grid[x][y - 1].allowsRight()) {
+                    if (dfs(x, y - 1, destinationX, destinationY, visited)) return true;
+                }
+                // Right
+                if (y < cols - 1 && !visited[x][y + 1] && grid[x][y + 1].allowsLeft()) {
+                    if (dfs(x, y + 1, destinationX, destinationY, visited)) return true;
+                }
+                // Up
+                if (x > 0 && !visited[x - 1][y] && grid[x - 1][y].allowsDown()) {
+                    if (dfs(x - 1, y, destinationX, destinationY, visited)) return true;
+                }
+                break;
+
+            case THREEWAY_BOTTOM:
+                // Left
+                if (y > 0 && !visited[x][y - 1] && grid[x][y - 1].allowsRight()) {
+                    if (dfs(x, y - 1, destinationX, destinationY, visited)) return true;
+                }
+                // Right
+                if (y < cols - 1 && !visited[x][y + 1] && grid[x][y + 1].allowsLeft()) {
+                    if (dfs(x, y + 1, destinationX, destinationY, visited)) return true;
+                }
+                // Down
+                if (x < rows - 1 && !visited[x + 1][y] && grid[x + 1][y].allowsUp()) {
+                    if (dfs(x + 1, y, destinationX, destinationY, visited)) return true;
+                }
+                break;
+
+            case THREEWAY_LEFT:
+                // Up
+                if (x > 0 && !visited[x - 1][y] && grid[x - 1][y].allowsDown()) {
+                    if (dfs(x - 1, y, destinationX, destinationY, visited)) return true;
+                }
+                // Down
+                if (x < rows - 1 && !visited[x + 1][y] && grid[x + 1][y].allowsUp()) {
+                    if (dfs(x + 1, y, destinationX, destinationY, visited)) return true;
+                }
+                // Left
+                if (y > 0 && !visited[x][y - 1] && grid[x][y - 1].allowsRight()) {
+                    if (dfs(x, y - 1, destinationX, destinationY, visited)) return true;
+                }
+                break;
+
+            case THREEWAY_RIGHT:
+                // Up
+                if (x > 0 && !visited[x - 1][y] && grid[x - 1][y].allowsDown()) {
+                    if (dfs(x - 1, y, destinationX, destinationY, visited)) return true;
+                }
+                // Down
+                if (x < rows - 1 && !visited[x + 1][y] && grid[x + 1][y].allowsUp()) {
+                    if (dfs(x + 1, y, destinationX, destinationY, visited)) return true;
+                }
+                // Right
+                if (y < cols - 1 && !visited[x][y + 1] && grid[x][y + 1].allowsLeft()) {
+                    if (dfs(x, y + 1, destinationX, destinationY, visited)) return true;
+                }
+                break;
+
+            case CROSSROAD:
+                // Up
+                if (x > 0 && !visited[x - 1][y] && grid[x - 1][y].allowsDown()) {
+                    if (dfs(x - 1, y, destinationX, destinationY, visited)) return true;
+                }
+                // Down
+                if (x < rows - 1 && !visited[x + 1][y] && grid[x + 1][y].allowsUp()) {
+                    if (dfs(x + 1, y, destinationX, destinationY, visited)) return true;
+                }
+                // Left
+                if (y > 0 && !visited[x][y - 1] && grid[x][y - 1].allowsRight()) {
+                    if (dfs(x, y - 1, destinationX, destinationY, visited)) return true;
+                }
+                // Right
+                if (y < cols - 1 && !visited[x][y + 1] && grid[x][y + 1].allowsLeft()) {
+                    if (dfs(x, y + 1, destinationX, destinationY, visited)) return true;
+                }
+                break;
         }
         return false;
     }
 
 
-    // Accessors
+
     public TileType[][] getGrid() {
         return grid;
     }
-
     public void setGrid(TileType[][] grid) {
         this.grid = grid;
     }
-
     public int getFitness() {
         return fitness;
     }

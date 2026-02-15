@@ -143,7 +143,7 @@ public class Tile extends JButton {
         if (result == JOptionPane.OK_OPTION) {
             tileType = (TileType) comboBox.getSelectedItem();
             repaint();  // Repaint the tile with the new type
-            this.gui.onTileChange(size,size, tileType);  // Notify the GUI about the tile change
+            this.gui.onTileChange();  // Notify the GUI about the tile change
         }
     }
 
