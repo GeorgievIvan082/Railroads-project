@@ -13,7 +13,7 @@ public class Tile extends JButton {
     private boolean isTrainStart;
     private boolean isTrainEnd;
     private int trainNumber;
-    private static Map<Integer, Color> trainColors = new HashMap<>();  // Map to store unique colors for each train
+    private static Map<Integer, Color> trainColors = new HashMap<>();
 
     public void setTileType(TileType tileType) {
         this.tileType = tileType;
@@ -130,7 +130,6 @@ public class Tile extends JButton {
 
     // Method to show a dropdown to select tile type
     private void showDropdownMenu() {
-        int size = gui.tiles.length;  // Get the size of the grid
         // Create a dropdown (combo box) with all tile types
         TileType[] types = TileType.values();
         JComboBox<TileType> comboBox = new JComboBox<>(types);

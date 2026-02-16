@@ -30,7 +30,7 @@ public class Gui extends JFrame {
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
                 Tile tile = new Tile(this, TileType.getRandomTileType());
-                tiles[row][col] = tile;  // Store the tile in the 2D array
+                tiles[row][col] = tile;  // Store the tile in a 2D array
                 gridPanel.add(tile);
             }
         }

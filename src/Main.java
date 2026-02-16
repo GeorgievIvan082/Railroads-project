@@ -23,23 +23,19 @@ public class Main {
 
         // Evolution process: iterate through generations
         for (int generation = 0; generation <= maxGenerations; generation++) {
-            // Evaluate the fitness of the current population
             population.evaluate(trainsList);
-
-            // Sort the population by fitness
             population.sortByFitness();
             ga.evolve(population);
             // Get the best individual from the current population
             Individual best = population.getBestIndividual();
             System.out.println("Generation " + generation + " - Best Fitness: " + best.getFitness());
 
-            // Update the grid with the best individual's solution
             grid.updateGridWithSolution(best.getGrid());
         }
 
         Individual bestSolution = population.getBestIndividual();
         System.out.println("Final Best Fitness: " + bestSolution.getFitness());
-        grid.updateGridWithSolution(bestSolution.getGrid());  // Update GUI with the best final solution
+        grid.updateGridWithSolution(bestSolution.getGrid());
         long endTime = System.currentTimeMillis();
         System.out.println("Execution took: "+(endTime-startTime)+"ms");
     }

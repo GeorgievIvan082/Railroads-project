@@ -14,7 +14,7 @@ public class GeneticAlgorithm {
         List<Individual> bestHalf = new ArrayList<>(population.getIndividuals().subList(0, 50)); // Keep the best 50
         List<Individual> newIndividuals = new ArrayList<>();
 
-        for (int i = 0; i < 49; i++) {
+        for (int i = 0; i < 25; i++) {
             Individual parent1 = bestHalf.get(i % bestHalf.size());
             Individual parent2 = bestHalf.get((i + 1) % bestHalf.size());
 
@@ -59,7 +59,7 @@ public class GeneticAlgorithm {
     public void mutate(Individual individual) {
 
         TileType[][] grid = individual.getGrid();
-        for (int i = 0; i < 2; i++) {  // Mutate 2 random tiles, for example
+        for (int i = 0; i < 2; i++) {
             int row = random.nextInt(grid.length);
             int col = random.nextInt(grid[0].length);
             grid[row][col] = TileType.getRandomTileType();

@@ -29,7 +29,6 @@ public class Individual {
                 totalGridCost += getTileCost(grid[row][col]);
             }
         }
-        // Evaluate the fitness based on the number of trains that reach their destination
         for (Train train : trains) {
             boolean pathValid = isTrainPathValid(train);
             if (pathValid) {
@@ -38,7 +37,7 @@ public class Individual {
         }
         // Combine the total tile cost and the number of trains that reached their destination
         if (trainsReachedDestination < trains.size()) {
-            fitness = trainsReachedDestination * 1000;
+            fitness = trainsReachedDestination * 1000-totalGridCost;
         } else {
             fitness = 100000 - totalGridCost;
         }
